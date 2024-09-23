@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improved Multi-step Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .step-card { display: none; }
+        .step-card.active { display: block; }
+        .spinner { display: none; }
+        .loading .spinner { display: inline-block; }
+        .error { color: red; font-size: 0.9em; display: none; }
+        .form-check-input:checked ~ label { font-weight: bold; color: #007bff; }
+
+        body {
+    background-image: url("https://wallpapers.com/images/hd/white-hd-cracked-pattern-elnlfst5pfqjswtr.jpg");
+
+        /* background-image: url("https://cdn.pixabay.com/photo/2017/07/02/15/54/the-whale-2464799_1280.jpg"); */
+        background-color: #ededed;
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        margin: 0;
+       
+        }
+
+        form {
+        opacity: 0.; /* adjust the value to your liking */
+        background-color: #000000; /* or any other color */
+        }
+
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* flex-direction: ; */
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html" aria-label="Whale Bot">Whale Bot</a>
+        </div>
+    </nav>
+    </div>
+  </nav>
+    <div class="container mt-5">
+        <form name="contact-form" action="#" method="post" style="align-items: center; justify-content: center; margin: 25px;">
+            <!-- Loading Spinner -->
+            <div class="text-center">
+                <div class="spinner-border spinner" role="status"></div>
+            </div>
+
+            <!-- Step 1: Personal Information -->
+            <div class="card step-card active" id="step1">
+                <div class="card-body">
+                    <h5 class="card-title">Personal Information</h5>
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                        <div class="error" id="fullNameError">Full Name is required.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telegramUsername" class="form-label">Telegram Username</label>
+                        <input type="text" class="form-control" id="telegramUsername" name="telegramUsername" placeholder="@yourtelegram" pattern="^@[A-Za-z0-9_]{5,}$" required>
+                        <div class="error" id="telegramError">Invalid Telegram Username (should start with @ and be at least 5 characters long).</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" pattern="^\d{10}$" required>
+                        <div class="error" id="phoneError">Phone Number must be 10 digits.</div>
+                    </div>
+                    <button class="btn btn-primary" onclick="validateStep(1)">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Service Selection -->
+            <div class="card step-card" id="step2">
+                <div class="card-body">
+                    <h5 class="card-title">Service Selection</h5>
+
+                    <!-- TON Coin Purchase -->
+                    <div class="mb-3">
+                        <label class="form-label">TON Coin Purchase</label>
+                        <input type="number" class="form-control mb-2" id="tonAmount" name="tonAmount" placeholder="Amount of TON coins">
+                    <div class="error" id="tonamountError">TON Amount is required.</div>
+                        <input type="text" class="form-control" id="tonAddress" name="tonAddress" placeholder="TON address">
+                <div class="error" id="tonaddressError">TON Address is required.</div>  
+                </div>
+
+                    <!-- Auto Bot Subscription -->
+                    <div class="mb-3">
+                        <label class="form-label">Auto Bot Subscription</label>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="serviceMeme" name="serviceMeme" onchange="toggleApiFields()">
+                            <label class="form-check-label" for="serviceMeme">Meme</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="serviceXemp" name="serviceXemp" onchange="toggleApiFields()">
+                            <label class="form-check-label" for="serviceXemp">Xemp</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="serviceHams" name="serviceHams" onchange="toggleApiFields()">
+                            <label class="form-check-label" for="serviceHams">Hams</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="serviceBlum" name="serviceBlum" onchange="toggleApiFields()">
+                            <label class="form-check-label" for="serviceBlum">Blum</label>
+                        </div>
+                    </div>
+
+                    <!-- API Information (hidden by default) -->
+                    <div id="apiFields" style="display: none;">
+                        <div class="mb-3">
+                            <label for="apiId" class="form-label">API ID</label>
+                            <input type="text" class="form-control" id="apiId" name="apiId" placeholder="Enter your API ID"><div class="error" id="apiidError">API ID must be 7 digits.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="apiHash" class="form-label">API Hash</label>
+                            <input type="text" class="form-control" id="apiHash" name="apiHash" placeholder="Enter your API Hash"><div class="error" id="apihashError">API Hash must be 40 characters.</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="validateStep(2)">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Payment Details -->
+            <div class="card step-card" id="step3">
+                <div class="card-body">
+                    <h5 class="card-title">Payment Details</h5>
+                    <div class="text-center mb-3">
+                        <img src="source/image.png" alt="QR Code for payment">
+                    </div>
+                    <p class="text-center">Scan the QR code or use UPI ID: <strong>ybl@bank</strong></p>
+
+                    <div class="mb-3">
+                        <label for="transactionId" class="form-label">Transaction ID</label>
+                        <input type="text" class="form-control" id="transactionId" name="transactionId" placeholder="Enter transaction ID" required>
+                        <div class="error" id="transactionError">Transaction ID is required.</div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="validateStep(3)">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Terms and Conditions -->
+            <div class="card step-card" id="step4">
+                <div class="card-body">
+                    <h5 class="card-title">Terms and Conditions</h5>
+                    <p>Please review and accept the terms and conditions to proceed.</p>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                        <label class="form-check-label" for="termsCheck">I agree to the <a href="terms-and-conditions.html" class="text-dark mr-3" >Terms and Conditions</a></label>
+                    </div>
+                    <button class="btn btn-success" onclick="submitForm()">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container d-flex flex-column align-items-center">
+            <div class="footer-icons d-flex">
+                <a href="https://github.com/py-hariom/" target="_blank" aria-label="GitHub">
+                    <i class="bi bi-github" style="font-size: 40px; color: #000;"></i>
+                </a>
+                <a href="https://telegram.me/notice_whale" target="_blank" aria-label="Telegram">
+                    <i class="bi bi-telegram" style="font-size: 40px; color: #0088cc;"></i>
+                </a>
+            </div>
+            <div class="footer-links">
+                <span class="text-dark">Whale Bot &copy; 2024. All rights reserved.</span>
+                <a href="/terms-and-conditions.html" class="text-dark">Terms and Conditions</a>
+            </div>
+        </div>
+    </footer>
+
+    
+    <!-- Make sure to include Bootstrap Icons CSS in your <head> section -->
+    
+    
+    
+    
+    <script>
+       function validateStep(step) {
+            let valid = true;
+
+            if (step === 1) {
+                // Step 1 Validation (kept unchanged from the original)
+                const fullName = document.getElementById('fullName').value;
+                const telegramUsername = document.getElementById('telegramUsername').value;
+                const phoneNumber = document.getElementById('phoneNumber').value;
+
+                if (!fullName) {
+                    document.getElementById('fullNameError').style.display = 'block';
+                    valid = false;
+                } else {
+                    document.getElementById('fullNameError').style.display = 'none';
+                }
+
+                if (!telegramUsername.match(/^@[A-Za-z0-9_]{5,}$/)) {
+                    document.getElementById('telegramError').style.display = 'block';
+                    valid = false;
+                } else {
+                    document.getElementById('telegramError').style.display = 'none';
+                }
+
+                if (!phoneNumber.match(/^\d{10}$/)) {
+                    document.getElementById('phoneError').style.display = 'block';
+                    valid = false;
+                } else {
+                    document.getElementById('phoneError').style.display = 'none';
+                }
+            } else if (step === 2) {
+                // Step 2 Validation
+                const tonAmount = document.getElementById('tonAmount').value;
+                const tonAddress = document.getElementById('tonAddress').value;
+                const serviceMeme = document.getElementById('serviceMeme').checked;
+                const serviceXemp = document.getElementById('serviceXemp').checked;
+                const serviceHams = document.getElementById('serviceHams').checked;
+                const serviceBlum = document.getElementById('serviceBlum').checked;
+                const apiId = document.getElementById('apiId').value;
+                const apiHash = document.getElementById('apiHash').value;
+
+                // Check if user filled at least one form: either TON Coin Purchase or Auto Bot Subscription
+                const tonPurchaseFilled = tonAmount && tonAddress;
+                const botSubscriptionSelected = serviceMeme || serviceXemp || serviceHams || serviceBlum;
+
+                // TON Coin Purchase Validation
+                if (tonPurchaseFilled) {
+                    // TON Amount must be filled
+                    if (!tonAmount) {
+                        document.getElementById('tonamountError').style.display = 'block';
+                        valid = false;
+                    } else {
+                        document.getElementById('tonamountError').style.display = 'none';
+                    }
+
+                    // TON Address must be filled
+                    if (!tonAddress) {
+                        document.getElementById('tonaddressError').style.display = 'block';
+                        valid = false;
+                    } else {
+                        document.getElementById('tonaddressError').style.display = 'none';
+                    }
+                }
+
+                // Auto Bot Subscription Validation (only if a bot is selected)
+                if (botSubscriptionSelected) {
+                    // API ID must be exactly 7 digits
+                    if (!apiId.match(/^\d{7}$/)) {
+                        document.getElementById('apiidError').style.display = 'block';
+                        valid = false;
+                    } else {
+                        document.getElementById('apiidError').style.display = 'none';
+                    }
+
+                    // API Hash must be exactly 40 characters
+                    if (!apiHash.match(/^[a-zA-Z0-9]{40}$/)) {
+                        document.getElementById('apihashError').style.display = 'block';
+                        valid = false;
+                    } else {
+                        document.getElementById('apihashError').style.display = 'none';
+                    }
+                }
+
+                // If neither TON Purchase nor Auto Bot Subscription is filled, show error
+                if (!tonPurchaseFilled && !botSubscriptionSelected) {
+                    alert('Please fill out either the TON Coin Purchase or the Auto Bot Subscription form.');
+                    valid = false;
+                }
+            } else if (step === 3) {
+                // Step 3 Validation (kept unchanged from the original)
+                const transactionId = document.getElementById('transactionId').value;
+
+                if (!transactionId) {
+                    document.getElementById('transactionError').style.display = 'block';
+                    valid = false;
+                } else {
+                    document.getElementById('transactionError').style.display = 'none';
+                }
+            }
+
+            if (valid) {
+                showLoadingSpinner(true);
+                setTimeout(() => {
+                    nextStep(step);
+                    showLoadingSpinner(false);
+                }, 1000); // Simulating a short delay to show the loading spinner
+            }
+        }
+
+        // Show the next step
+        function nextStep(currentStep) {
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.getElementById(`step${currentStep + 1}`).classList.add('active');
+        }
+
+        // Toggle API ID and Hash fields visibility based on Auto Bot Subscription
+        function toggleApiFields() {
+            const serviceMeme = document.getElementById('serviceMeme').checked;
+            const serviceXemp = document.getElementById('serviceXemp').checked;
+            const serviceHams = document.getElementById('serviceHams').checked;
+            const serviceBlum = document.getElementById('serviceBlum').checked;
+
+            const apiFields = document.getElementById('apiFields');
+            if (serviceMeme || serviceXemp || serviceHams || serviceBlum) {
+                apiFields.style.display = 'block';
+            } else {
+                apiFields.style.display = 'none';
+            }
+        }
+
+        // Show or hide loading spinner
+        function showLoadingSpinner(show) {
+            const spinner = document.querySelector('.spinner');
+            if (show) {
+                spinner.classList.add('loading');
+            } else {
+                spinner.classList.remove('loading');
+            }
+        }
+
+        // Final form submission
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwkJ_F0hMtIMJfnx1_fLcphAr2VxtSu2FAjdM2mFFjYMuyKiMwT6_Zylofq9fl0WGxW/exec'
+
+        const form = document.forms['contact-form']
+
+        form.addEventListener('submit', e => {
+        e.preventDefault()
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => alert("Thank you! your form is submitted successfully." ))
+        .then(() => { 
+            
+            if (data.result === 'success') {
+            // Redirect to Telegram after successful form submission
+            window.location.href = 'https://t.me/your_telegram_username';
+            } else {
+            alert('There was an error submitting the form. Please try again.')
+            }
+        })
+        .catch(error => console.error('Error!', error.message))
+        })
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,33 @@
+
+.navbar-brand {
+    font-weight: bold;
+    color: #333;
+}
+.navbar-brand:hover {
+    color: #007bff;
+}
+.step-card { display: none; }
+.step-card.active { display: block; }
+.error { color: red; font-size: 0.9em; display: none; }
+footer {
+  
+    background-color: #f8f9fa;
+    padding: 1rem 0;
+}
+.footer-icons a {
+    margin-right: 1rem;
+}
+.section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+.section-title {
+    font-size: 4rem;
+}
+.btn-custom {
+    font-size: 1.2rem;
+    margin: 10px;
+}
