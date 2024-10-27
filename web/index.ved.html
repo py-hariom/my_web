@@ -57,6 +57,40 @@
       transform: scale(1.1);
     }
   }
+  footer {
+	position: fixed;
+	bottom: 10px;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	z-index: 1000;
+  }
+  
+  footer a {
+	display: inline-block;
+	padding: 5px 10px;
+	/* background-color: rgba(0, 0, 0, 0.5); */
+	color: white;
+	text-decoration: none;
+	border-radius: 5px;
+	font-size: 14px;
+	transition: background-color 0.3s ease;
+  }
+  
+  footer a:hover {
+	background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  @media (max-width: 600px) {
+	footer {
+	  bottom: 5px;
+	}
+	
+	footer a {
+	  font-size: 12px;
+	  padding: 3px 6px;
+	}
+  }
 </style>
 </head>
 <body>
@@ -65,6 +99,11 @@
     <h4>Happy Birthday</h4>
     <h2>Vedika</h2>
   </div>
+  <footer>
+    <a href="https://github.com/py-hariom" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-github"></i> | click me : Created by py-hariom
+    </a>
+  </footer>
 
 <script>
 // helper functions
